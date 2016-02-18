@@ -68,7 +68,7 @@ class GlossedLanguage:
         action, action_gloss = self.action()
 
         # verb agreement
-        if agent_gloss not in self.pronouns:
+        if agent_gloss not in self.pronoun_pairs:
             action_gloss += "s"
 
         patient_gloss = self.pronoun_pairs.get(patient_gloss, patient_gloss)
