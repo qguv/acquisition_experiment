@@ -134,8 +134,8 @@ if __name__ == "__main__":
         coin_noun(), coin_noun(), coin_noun(),
         random.choice(vowels) + cvc_syllable() + cv_syllable(), # cvc syllable
         coin_noun()[1:],                                        # doesn't start with vowel
-        coin_verb() + cv_syllable(),                            # non-final nasal
-        coin_noun() + "wa"                                      # letter that doesn't occur
+        coin_verb()[2:] + random.choice(vowels),                # non-final nasal
+        coin_noun()[2:] + "wa"                                  # letter that doesn't occur
     ]
     random.shuffle(words)
     for word in words:
