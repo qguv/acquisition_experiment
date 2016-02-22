@@ -13,7 +13,7 @@ nasals = {
         "b": "m",
         "otherwise": "n",
 }
-
+ 
 # don't use 3rd person singular (would need additional verb agreement)
 pronoun_pairs = {
         "I": "me",
@@ -28,6 +28,9 @@ action_glosses = "like hate love bite see hurt hear".split(" ")
 
 def cv_syllable():
     return random.choice(consonants) + random.choice(vowels)
+
+def cvc_syllable():
+    return random.choice(consonants) + random.choice(vowels) + random.choice(consonants)
 
 def coin_noun():
     word = random.choice(vowels)
@@ -76,6 +79,21 @@ class GlossedLanguage:
         gloss = "{} {} {}.".format(agent_gloss, action_gloss, patient_gloss).capitalize()
         return (new_sentence, gloss)
 
+    def ungrammatical_sentence(self):
+        agent = self.actor()[0]
+        patient = self.actor()[0]
+        action = self.action()[0]
+        sentence = []
+
+        if(random.randrange(0, 2)):
+            # SVO word order
+            sentence = [agent, action, patient]
+        else:
+            # VSO word order
+            sentence = [action, agent, patient]
+
+        return "{} {} {}.".format(sentence[0], sentence[1], sentence[2]).capitalize()
+
 if __name__ == "__main__":
     nom_pronoun_glosses = list(pronoun_pairs.keys())
     random.shuffle(nom_pronoun_glosses)
@@ -98,4 +116,28 @@ if __name__ == "__main__":
         print("  -", sentence)
         print("   ", gloss)
 
-    #print("\n\nungrammatical examples".upper()) #TODO
+    print("\n\nexercise: pick the ungrammatical stentence".upper())
+    for i in range(10):
+        sentences = [
+            language.sentence()[0],
+            language.sentence()[0],
+            language.ungrammatical_sentence()
+        ]
+        random.shuffle(sentences)
+        print()
+        for i in range(3):
+            print("   ", sentences[i])
+
+    print("\n\nexercise: could this word occur?".upper())
+    words = [
+        coin_verb(), coin_verb(), coin_verb(),
+        coin_noun(), coin_noun(), coin_noun(),
+        random.choice(vowels) + cvc_syllable() + cv_syllable(), # cvc syllable
+        coin_noun()[1:],                                        # doesn't start with vowel
+        coin_verb() + cv_syllable(),                            # non-final nasal
+        coin_noun() + "wa"                                      # letter that doesn't occur
+    ]
+    random.shuffle(words)
+    for word in words:
+        print()
+        print("  - %-20s YES  NO" % word)
